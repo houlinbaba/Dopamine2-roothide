@@ -14422,7 +14422,7 @@ index dfa1fb1..2fe7dcd 100644
  DEF_SYSCALL(read, 3)
  DEF_SYSCALL(access, 33)
 diff --git a/BaseBin/dyldhook/src/reimpl.c b/BaseBin/dyldhook/src/reimpl.c
-index f864190..ebef881 100644
+index f864190..65e6973 100644
 --- a/BaseBin/dyldhook/src/reimpl.c
 +++ b/BaseBin/dyldhook/src/reimpl.c
 @@ -56,20 +56,6 @@ uint64_t __attribute((noinline, naked)) get_tpidrro_el0(void)
@@ -14446,6 +14446,16 @@ index f864190..ebef881 100644
  
  struct mach_port_options gMigOptions = {
  	.flags = 0x1000,
+@@ -220,6 +206,4 @@ mach_msg_return_t mach_msg2(
+ kern_return_t mach_msg(mach_msg_header_t *msg, mach_msg_option_t option, mach_msg_size_t send_size, mach_msg_size_t rcv_size, mach_port_name_t rcv_name, mach_msg_timeout_t timeout, mach_port_name_t notify)
+ {
+ 	return mach_msg_overwrite(msg, option, send_size, rcv_size, rcv_name, timeout, notify, NULL, 0);
+-}
+-
+-#endif
+\ No newline at end of file
++}
+\ No newline at end of file
 diff --git a/BaseBin/dyldhook/src/roothider.c b/BaseBin/dyldhook/src/roothider.c
 index c74fc11..ff13894 100644
 --- a/BaseBin/dyldhook/src/roothider.c
