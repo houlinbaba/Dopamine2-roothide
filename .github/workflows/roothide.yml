@@ -1,8 +1,6 @@
-name: "* build tipa file *"
+name: "build tipa file"
 
 on:
-schedule:
-- cron: '0 _/2 _ _ _' # every 2 hours
  workflow_dispatch:
  pull_request:
  push:
@@ -91,7 +89,6 @@ jobs:
  uses: actions/upload-artifact@v4
  with:
  name: roothide-Dopamine-${{ env.version }}.tipa
- path: # trigger
- 
+ path: |
  ${{ github.workspace }}/Application/roothide-Dopamine-${{ env.version }}.tipa
-
+ 
