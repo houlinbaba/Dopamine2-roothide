@@ -24,6 +24,18 @@ jobs:
           cd ${{ github.workspace }}
           git apply --check slim-ios16.patch
           git apply slim-ios16.patch
+          # binary assets excluded from text patch: alt themes/icons, iOS15 bootstrap, zebra
+          rm -rf Application/Dopamine/Assets.xcassets/AppIcon_Blue.appiconset \
+                 Application/Dopamine/Assets.xcassets/AppIcon_ElleKit.appiconset \
+                 Application/Dopamine/Assets.xcassets/AppIcon_Purple.appiconset \
+                 Application/Dopamine/Assets.xcassets/AppIcon_Red.appiconset \
+                 Application/Dopamine/Assets.xcassets/Background/Background_Blue.imageset \
+                 Application/Dopamine/Assets.xcassets/Background/Background_ElleKit.imageset \
+                 Application/Dopamine/Assets.xcassets/Background/Background_Purple.imageset \
+                 Application/Dopamine/Assets.xcassets/Background/Background_Red.imageset
+          rm -f Application/Dopamine/Resources/bootstrap_1800.tar.zst \
+                Application/Dopamine/Resources/zebra.deb \
+                Application/Dopamine/Exploits/weightBufs/exploit/model_tmp.hwx
           git submodule update --init --recursive
           
       - name: Install Procursus
