@@ -91,5 +91,7 @@ jobs:
  uses: actions/upload-artifact@v4
  with:
  name: roothide-Dopamine-${{ env.version }}.tipa
- path: |
+ path: # trigger
+ 
  ${{ github.workspace }}/Application/roothide-Dopamine-${{ env.version }}.tipa
+
