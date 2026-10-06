@@ -5,6 +5,9 @@
 
 #define PROC_PIDPATHINFO_MAXSIZE        (4*MAXPATHLEN)
 
+// xpc_connection_get_pid marked unavailable in newer SDKs, declare manually (exists at runtime)
+pid_t xpc_connection_get_pid(xpc_connection_t connection);
+
 bool __thread gAllowRedirection = true;
 
 BOOL preferencePlistNeedsRedirection(NSString *plistPath)
