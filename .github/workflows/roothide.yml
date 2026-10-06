@@ -39,10 +39,11 @@ jobs:
       - name: Build and Install trustcache
         run: |
           set -x
+          brew install openssl@3 || true
           git clone https://github.com/CRKatri/trustcache
           cd trustcache
-          export CFLAGS="$CFLAGS -I$(brew --prefix openssl)/include -arch arm64"
-          export LDFLAGS="$LDFLAGS -L$(brew --prefix openssl)/lib -arch arm64"
+          export CFLAGS="$CFLAGS -I$(brew --prefix openssl@3)/include -arch arm64"
+          export LDFLAGS="$LDFLAGS -L$(brew --prefix openssl@3)/lib -arch arm64"
           gmake -j$(sysctl -n hw.physicalcpu) OPENSSL=1
           sudo cp trustcache /opt/procursus/bin/
 
