@@ -1,12 +1,11 @@
 #import <Foundation/Foundation.h>
+#include <dlfcn.h>
 #import <substrate.h>
 #include <roothide.h>
 #include "common.h"
 
 #define PROC_PIDPATHINFO_MAXSIZE        (4*MAXPATHLEN)
 
-// xpc_connection_get_pid marked unavailable in newer SDKs, declare manually (exists at runtime)
-pid_t xpc_connection_get_pid(xpc_connection_t connection);
 
 bool __thread gAllowRedirection = true;
 
@@ -94,7 +93,11 @@ void* (*orig__CFPrefsDaemon_handleMessage_fromPeer_replyHandler__)(id self, SEL 
 void* new__CFPrefsDaemon_handleMessage_fromPeer_replyHandler__(id self, SEL selector, xpc_object_t message, xpc_connection_t connection, void* replyHandler)
 {
     uid_t clientUid = xpc_connection_get_euid(connection);
-    pid_t clientPid = xpc_connection_get_pid(connection);
+    static pid_t (*_xpc_connection_get_pid)(xpc_connection_t) = NULL;
+    if (!_xpc_connection_get_pid) {
+        _xpc_connection_get_pid = dlsym(RTLD_DEFAULT, "xpc_connection_get_pid");
+    }
+    pid_t clientPid = _xpc_connection_get_pid ? _xpc_connection_get_pid(connection) : -1;
 
 	uint32_t csFlags = 0;
 	csops(clientPid, CS_OPS_STATUS, &csFlags, sizeof(csFlags));
